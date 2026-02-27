@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Word Guessing Game</title>
+
+    <style>
+        * {
+        box-sizing: border-box;
+        font-family: system-ui, Arial, sans-serif;
+        }
+
+        body {
+        margin: 0;
+        padding: 40px 20px;
+        background: #f9fafb;
+        color: #111;
+        text-align: center;
+        }
+
+        h1 {
+        margin-bottom: 10px;
+        }
+
+        .container {
+        background: white;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 24px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        select {
+        width: 100%;
+        padding: 10px 12px;
+        margin: 12px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        cursor: pointer;
+        }
+
+        select:hover {
+        border-color: #2563eb;
+        }
+
+        select:focus {
+        outline: none;
+        border-color: #2563eb;
+        }
+
+        button {
+        padding: 10px 18px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .button {
+        background: #2563eb;
+        color: white;
+        width: 100%;
+        }
+
+        .button:hover {
+        background: #1d4ed8;
+        }
+
+        .newG {
+        margin-top: 10px;
+        background: #e5e7eb;
+        }
+
+        .newG:hover {
+        background: #d1d5db;
+        }
+
+        button:hover {
+        transform: translateY(-2px);
+        }
+
+        button:active {
+        transform: scale(0.96);
+        }
+
+        select.correct {
+        border-color: #16a34a;
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.35);
+        }
+
+        select.wrong {
+        border-color: #dc2626;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.35);
+        }
+
+        select {
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .footer {
+        margin-top: auto;
+        padding: 12px 0;
+        font-size: 13px;
+        color: #6b7280;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Word Guessing Game</h1>
+    
+    <div class = "container">
+        <p id="guess">Guess the word for a little surprise!</p>
+        <h6>Clue: Trust your gut.</h6>
+        <select id="select">
+            <option>None</option>
+            <option id="red" class="red">RED</option>
+            <option id="blue" class="blu">BLUE</option>
+            <option id="yellow" class="yell">YELLOW</option>
+            <option id="green" class="green">GREEN</option>
+            <option id="indigo" class="ind">INDIGO</option>
+            <option id="violet" class="vio">VIOLET</option>
+        </select>
+        <button id="btn" class="button" onclick="btn()">Check</button>
+    </div>
+
+    <button class="newG" onclick="newG()">New Game</button><br>
+
+
+    <div class="activities">
+      <h2>Activities</h2>
+      <ul>
+        <li>
+            <a href="index.html">Return Home</a>
+            </button>   
+          </a>
+        </li>
+        <li>
+          <a href="browser_dashboard.html">Go to Dashboard</a>
+        </li>
+      </ul>
+    </div>
+
+    
+    <footer class = 'footer'>Programmed by Owen Bernardo III A. Pacao, BSIT2D</footer>
+    
+    <script>
+        const colors = ['red', 'yellow', 'blue', 'green', 'indigo', 'violet'];
+        let pickedColor = "";
+        let attempts = 5;
+
+        const countMsg = document.getElementById("guess");
+        const select = document.getElementById("select");
+        const message = document.createElement("p");
+
+        document.querySelector(".container").appendChild(message);
+
+        function pickColor() {
+        const randomIndex = Math.floor(Math.random() * colors.length);
+        pickedColor = colors[randomIndex];
+
+        attempts = 5;
+        message.textContent = "";
+        countMsg.textContent = "You have 5 attempts left";
+        
+        }
+
+        document.addEventListener("keydown", (e) => {
+        if (e.key === "F12") {
+            console.log("The color is ", pickedColor);
+        }
+        });
+
+
+        function btn() {
+        let guess = select.value.trim().toLowerCase();
+
+        if (guess === "none" || guess === "") {
+            message.textContent = "❗ Please choose a color.";
+            return;
+        }
+
+        if (guess === pickedColor) {
+            message.textContent = "🎉 Correct! You guessed it!";
+            countMsg.textContent = "You win!";
+            return;
+        }
+
+        if (attempts > 0) {
+            message.textContent = "❌ Wrong guess. Try again!";
+            countMsg.textContent = `You have ${attempts} attempts left`;
+        } else {
+            message.textContent = `💀 Game over! The color was "${pickedColor}".`;
+            countMsg.textContent = "No attempts left";
+        }
+
+        select.classList.remove("correct", "wrong");
+
+        if (guess === pickedColor) {
+            message.textContent = "🎉 Correct! You guessed it!";
+            countMsg.textContent = "You win!";
+            select.classList.add("correct");
+
+
+            setTimeout(() => {
+            select.classList.remove("correct");
+            }, 800);
+
+        return;
+        }
+
+
+        attempts--;
+        select.classList.add("wrong");
+
+        setTimeout(() => {
+            select.classList.remove("wrong");
+        }, 600);  
+
+
+        } 
+
+
+
+        function newG() {
+        select.value = "none";
+        pickColor();
+        }
+
+        
+        pickColor();
+
+    </script>
+
+</body>
+</html>
